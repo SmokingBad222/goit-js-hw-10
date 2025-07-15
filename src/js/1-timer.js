@@ -40,7 +40,7 @@ const options = {
 flatpickr(datetimePicker, options);
 
 function updateTimer(){
-    const now now Date();
+    const now = new Date();
     const timeOff = userSelectedDate - now;
 }
 
