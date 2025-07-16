@@ -67,10 +67,10 @@ function updateTimer(){
   if (timeOff <= 0) {
     clearInterval(timerId);
 
-    daysE1.textContent = '00';
-    hourE1.textContent = '00';
-    minutesE1.textContent = '00';
-    secondsE1.textContent = '00';
+    daysE1.textContent = addLeadingZero(days);
+    hourE1.textContent = addLeadingZero(hours);
+    minutesE1.textContent = addLeadingZero(minutes);
+    secondsE1.textContent = addLeadingZero(seconds);
 
     datetimePicker.disabled = false;
     startBtn.disabled = true;
