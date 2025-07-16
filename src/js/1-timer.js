@@ -4,7 +4,7 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 const datetimePicker = document.querySelector('#datetime-picker');
-const startBTN = document.querySelector('[data-start]');
+const startBtn = document.querySelector('[data-start]');
 const daysE1 = document.querySelector('[data-days]');
 const hourE1 = document.querySelector('[data-hours]');
 const minutesE1 = document.querySelector('[data-minutes]');
@@ -14,9 +14,9 @@ let userSelectedDate = null;
 let timerId = null;
 
 
-startBTN.disabled = true;
+startBtn.disabled = true;
 
-const options = {
+flatpickr(datetimePicker, {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -35,15 +35,11 @@ const options = {
       startBtn.disabled = false;
     }
   },
-};
+});
 
-flatpickr(datetimePicker, options);
-
-function updateTimer(){
-    const now = new Date();
-    const timeOff = userSelectedDate - now;
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
 }
-
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -62,6 +58,37 @@ function convertMs(ms) {
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
+}
+
+function updateTimer(){
+    const now = new Date();
+  const timeOff = userSelectedDate - now;
+  
+  if (timeOff <= 0) {
+    clearInterval(timerId);
+
+    daysE1.textContent = '00';
+    hourE1.textContent = '00';
+    minutesE1.textContent = '00';
+    secondsE1.textContent = '00';
+
+    datetimePicker.disabled = false;
+    startBtn.disabled = true;
+
+    iziToast.success({
+      title: 'Done',
+      message: 'Countdown finished',
+      position: 'topRight',
+    });
+    return;
+  }
+
+  const { days, hours, minutes, seconds } = convertMs(timeOff);
+
+  daysE1.textContent = days;
+  hourE1.textContent = hours;
+  minutesE1.textContent = minutes;
+  secondsE1.textContent = seconds;
 }
 
 startBtn.addEventListener('click', () => {
