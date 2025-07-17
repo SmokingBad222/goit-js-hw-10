@@ -13,7 +13,6 @@ const secondsE1 = document.querySelector('[data-seconds]');
 let userSelectedDate = null;
 let timerId = null;
 
-
 startBtn.disabled = true;
 
 flatpickr(datetimePicker, {
@@ -42,35 +41,30 @@ function addLeadingZero(value) {
 }
 
 function convertMs(ms) {
-  // Number of milliseconds per unit of time
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
 
-  // Remaining days
   const days = Math.floor(ms / day);
-  // Remaining hours
   const hours = Math.floor((ms % day) / hour);
-  // Remaining minutes
   const minutes = Math.floor(((ms % day) % hour) / minute);
-  // Remaining seconds
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
 }
 
-function updateTimer(){
-    const now = new Date();
+function updateTimer() {
+  const now = new Date();
   const timeOff = userSelectedDate - now;
-  
+
   if (timeOff <= 0) {
     clearInterval(timerId);
 
-    daysE1.textContent = addLeadingZero(days);
-    hourE1.textContent = addLeadingZero(hours);
-    minutesE1.textContent = addLeadingZero(minutes);
-    secondsE1.textContent = addLeadingZero(seconds);
+    daysE1.textContent = addLeadingZero(0);
+    hourE1.textContent = addLeadingZero(0);
+    minutesE1.textContent = addLeadingZero(0);
+    secondsE1.textContent = addLeadingZero(0);
 
     datetimePicker.disabled = false;
     startBtn.disabled = true;
@@ -85,10 +79,10 @@ function updateTimer(){
 
   const { days, hours, minutes, seconds } = convertMs(timeOff);
 
-  daysE1.textContent = days;
-  hourE1.textContent = hours;
-  minutesE1.textContent = minutes;
-  secondsE1.textContent = seconds;
+  daysE1.textContent = addLeadingZero(days);
+  hourE1.textContent = addLeadingZero(hours);
+  minutesE1.textContent = addLeadingZero(minutes);
+  secondsE1.textContent = addLeadingZero(seconds);
 }
 
 startBtn.addEventListener('click', () => {
